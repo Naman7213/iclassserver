@@ -1,21 +1,22 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
+const cors = require("cors");
 require("./DB/conn");
-const Admin = require("./model/adminSchema");
+const studentRoutes = require("./Routes/studentRoutes");
+const adminRoutes = require("./Routes/adminRoutes");
+const bodyParser = require("body-parser");
 
-app.get("/", async (req, res) => {
-  try {
-    Admin.find()
-      .then((data) => {
-        res.status(200).json({ data });
-      })
-      .catch((err) => {
-        res.status(500).json({ err });
-      });
-  } catch {
-    res.status(200).json({ message: "error" });
-  }
+app.use(cors());
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+app.get("/", (req, res) => {
+  res.status(200).json({ message: "You are requestion / route" });
 });
+
+app.use("/student", studentRoutes);
+app.use("/admin", adminRoutes);
 
 module.exports = app;
