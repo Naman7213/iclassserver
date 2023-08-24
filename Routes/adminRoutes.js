@@ -20,12 +20,11 @@ router.post("/login", async (req, res) => {
   try {
     const findAdmin = await Admin.findOne({ email: email });
     if (findAdmin) {
-      // if (findAdmin.message.password === password) {
-      return res.status(200).json({ message: "Login Successful" });
-      // }
-      // else {
-      // return res.status(400).json({ message: "Please check your Details" });
-      // }
+      if (findAdmin.password === password) {
+        return res.status(200).json({ message: "Login Successful" });
+      } else {
+        return res.status(400).json({ message: "Please check your Details" });
+      }
     } else {
       return res.status(401).json({ message: "Admin Not Found" });
     }
